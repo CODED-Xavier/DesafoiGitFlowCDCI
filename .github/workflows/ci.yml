@@ -1,0 +1,30 @@
+name: CI Simplificada - HTML e CSS
+
+on:
+  push:
+    branches: [ "main", "master", "development" ]
+  pull_request:
+    branches: [ "main", "master", "development" ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Baixa os arquivos do seu repositório
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # 2. Valida todos os arquivos HTML do projeto
+      - name: Validar HTML
+        uses: htmlhint/action-htmlhint@v2
+        with:
+          files: "**/*.html"
+
+      # 3. Valida todos os arquivos CSS do projeto usando Stylelint
+      - name: Validar CSS
+        uses: stylelint/actions-stylelint@v1
+        with:
+          stylelint_config: stylelint-config-standard
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          target: "**/*.css"
