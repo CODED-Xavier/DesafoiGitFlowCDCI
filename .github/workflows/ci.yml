@@ -1,72 +1,30 @@
-name: CI/CD - Validar e Publicar HTML
+name: CI Simplificada - HTML e CSS
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main", "master", "development" ]
   pull_request:
-    branches: [ "main", "master" ]
-
-# Permissões necessárias para que o GitHub Actions publique no GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Garante que apenas um deploy aconteça por vez
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+    branches: [ "main", "master", "development" ]
 
 jobs:
-  # JOB 1: Testes e validações (CI)
-  test:
+  lint:
     runs-on: ubuntu-latest
+
     steps:
+      # 1. Baixa os arquivos do seu repositório
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
+      # 2. Valida todos os arquivos HTML do projeto
+      - name: Validar HTML
+        uses: htmlhint/action-htmlhint@v2
         with:
-          node-version: '20'
+          files: "**/*.html"
 
-      - name: Validar sintaxe HTML (HTMLHint)
-        run: npx htmlhint "**/*.html"
-
-      - name: Verificar formatação (Prettier)
-        run: npx prettier --check "**/*.html"
-
-      - name: Verificar links quebrados
-        uses: lycheeverse/lychee-action@v2
+      # 3. Valida todos os arquivos CSS do projeto usando Stylelint
+      - name: Validar CSS
+        uses: stylelint/actions-stylelint@v1
         with:
-          args: --verbose --no-progress "**/*.html"
-
-  # JOB 2: Publicação automática (CD)
-  deploy:
-    # Só roda se os testes do JOB 1 passarem com sucesso
-    needs: test
-    # Só roda se as alterações forem na branch principal (evita deploy em Pull Requests de teste)
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-      
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
-
-      - name: Configurar ambiente do Pages
-        uses: actions/configure-pages@v5
-
-      # Compacta o HTML do repositório para o formato que o Pages consome
-      - name: Fazer upload dos arquivos estáticos
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.' # Se seu HTML estiver numa pasta ex: 'public' ou 'src', mude aqui
-
-      # Faz a publicação oficial do site
-      - name: Publicar no GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          stylelint_config: stylelint-config-standard
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          target: "**/*.css"
