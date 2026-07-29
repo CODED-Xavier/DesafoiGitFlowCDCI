@@ -126,3 +126,7 @@ border-radius: 12px;
 border: 1px solid var(--border-color);
 }
 
+.trend.negative {
+color: var(--accent-blue);
+font-size: 0.875rem;
+}
