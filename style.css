@@ -148,3 +148,12 @@ border-top: 2px solid var(--accent-blue);
 border-radius: 4px 4px 0 0;
 transition: height 0.5s;
 }
+.kpi-card .value.alert {
+color: var(--accent-red);
+}
+.trend.danger {
+color: var(--accent-red);
+.trend.negative {
+color: var(--accent-blue);
+font-size: 0.875rem;
+}
