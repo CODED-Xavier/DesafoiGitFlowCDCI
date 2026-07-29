@@ -126,6 +126,11 @@ border-radius: 12px;
 border: 1px solid var(--border-color);
 }
 
+.kpi-card .value.alert {
+color: var(--accent-red);
+}
+.trend.danger {
+color: var(--accent-red);
 .trend.negative {
 color: var(--accent-blue);
 font-size: 0.875rem;
