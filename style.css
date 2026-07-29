@@ -157,3 +157,15 @@ color: var(--accent-red);
 color: var(--accent-blue);
 font-size: 0.875rem;
 }
+}
+
+::-webkit-scrollbar {
+width: 8px;
+}
+::-webkit-scrollbar-track {
+background: var(--bg-main);
+}
+::-webkit-scrollbar-thumb {
+background: var(--border-color);
+border-radius: 4px;
+}
