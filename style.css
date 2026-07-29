@@ -131,5 +131,7 @@ color: var(--accent-red);
 }
 .trend.danger {
 color: var(--accent-red);
+.trend.negative {
+color: var(--accent-blue);
 font-size: 0.875rem;
 }
